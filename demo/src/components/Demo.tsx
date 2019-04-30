@@ -14,7 +14,7 @@ export class Demo extends React.Component<{}, IState> {
 	}
 
 	palette = new Palette()
-	src = 'src/assets/images/sample.jpg'
+	src = 'src/assets/images/sample2.jpg'
 	componentDidMount() {
 		let image = new Image(64, 64) 
 		image.src = this.src

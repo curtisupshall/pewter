@@ -18,9 +18,9 @@ export default class Palette {
 			return []
 		}
 
-		const tolerance = 100
-		const filterTolerance = 50
-		const numThreshold = 30
+		const tolerance = 40
+		const filterTolerance = 70
+		const numThreshold = 40
 
 		if (n === 0) {
 			return [new RGB()]
@@ -44,24 +44,33 @@ export default class Palette {
 					sum += distance
 					count ++
 					if (distance <= tolerance) {
-						buckets[j ++].push(pixels[i])
-						if (++ i === pixels.length) {
-							break
+						buckets[j].push(pixels[i ++])
+						j = 0
+						
+						if (i < pixels.length) {
+							i ++
 						}
+						else break
 					}
 				} catch (e) {
 					console.log('bad i:', i)
 				}
 			}
-			buckets.push(new Bucket(pixels[i]))
+			if (pixels[i]) {
+				buckets.push(new Bucket(pixels[i]))
+			}
 		}
-		console.log(`from ${pixels.length} pixels, there are ${buckets.length} buckets`);
-		console.log('buckets before sort:', buckets)
+		// console.log(`from ${pixels.length} pixels, there are ${buckets.length} buckets`);
+		// console.log('buckets before sort:', buckets)
 		console.log('average color dist: ', sum / count)
 		buckets.sort((a, b) => {
 			return a.size() - b.size()
 		})
-		console.log('buckets after sort:', buckets)
+		console.log('buckets', buckets)
+		buckets.forEach(bucket => {
+			console.log(`Count: ${bucket.size()}, color: ${bucket.swirl().toCSS()}`)
+		})
+		// console.log('buckets after sort:', buckets)
 		if (filter.length) {
 			buckets = buckets.reduce((arr: Bucket[], bucket: Bucket) => {
 				for (let i = 0; i < filter.length; i ++) {
