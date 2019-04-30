@@ -1,4 +1,4 @@
-import { RGB } from './RGB'
+import RGB from './RGB'
 
 export class Bucket {
 	private data: RGB[]

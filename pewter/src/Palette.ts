@@ -1,24 +1,26 @@
-import { RGB } from './RGB'
+import RGB from './RGB'
 import { Canvas, Image } from './Canvas';
 import { Bucket } from './Bucket';
 
 export default class Palette {
-	public colors: RGB[]
-	public canvas: Canvas
+	private canvas: Canvas
 
-	constructor(image: Image) {
-		this.canvas = new Canvas(image)
-		this.colors = this.getColors()
+	constructor(image?: any) {
+		this.setImage(image)
 	}
 
 	/**
 	 * @TODO Make a timer for gathering/calculating
 	 */
 	getColors = (n: number = 1, filter: RGB[] = []): RGB[] => {
+		console.log('Palette.data.length: ', this.canvas.data.length)
+		if (this.canvas.data.length === 0) {
+			return []
+		}
 
-		const tolerance = 0.1
-		const filterTolerance = 0.1
-		const numThreshold = 0.1
+		const tolerance = 100
+		const filterTolerance = 50
+		const numThreshold = 30
 
 		if (n === 0) {
 			return [new RGB()]
@@ -26,26 +28,40 @@ export default class Palette {
 		else if (n < 1) {
 			throw new Error('Number of colors must be non-negative.')
 		}
-		else if (n > this.canvas.size()) {
-			throw new Error('Not enough data to produce ' + n + ' colors.')
+		else if (n > this.canvas.data.length) {
+			throw new Error('Not enough data to produce ' + n + ' color(s).')
 		}
 
 		let buckets: Bucket[] = []
 		let pixels: RGB[] = this.canvas.data
 		let output: RGB[] = []
-		for (let i = 0; i < this.canvas.size(); i ++) {
+		let sum: number = 0 // DEBUG
+		let count: number = 0
+		for (let i = 0; i < pixels.length; i ++) {
 			for (let j = 0; j < buckets.length; j ++) {
-				if (buckets[j].peek().distanceTo(pixels[i]) <= tolerance) {
-					buckets[j].push(pixels[i])
-					j = 0
-					i ++
+				try {
+					let distance: number = buckets[j].peek().distanceTo(pixels[i])
+					sum += distance
+					count ++
+					if (distance <= tolerance) {
+						buckets[j ++].push(pixels[i])
+						if (++ i === pixels.length) {
+							break
+						}
+					}
+				} catch (e) {
+					console.log('bad i:', i)
 				}
 			}
 			buckets.push(new Bucket(pixels[i]))
 		}
+		console.log(`from ${pixels.length} pixels, there are ${buckets.length} buckets`);
+		console.log('buckets before sort:', buckets)
+		console.log('average color dist: ', sum / count)
 		buckets.sort((a, b) => {
 			return a.size() - b.size()
 		})
+		console.log('buckets after sort:', buckets)
 		if (filter.length) {
 			buckets = buckets.reduce((arr: Bucket[], bucket: Bucket) => {
 				for (let i = 0; i < filter.length; i ++) {
@@ -73,5 +89,9 @@ export default class Palette {
 			n --
 		}
 		return output
+	}
+
+	setImage = (image?: any) => {
+		this.canvas = new Canvas(image)
 	}
 }

@@ -8,7 +8,7 @@ export const yuvConstants = {
 	V_MAX: 0.615
 }
 
-export class RGB {
+export default class RGB {
 	public red: number
 	public green: number
 	public blue: number
@@ -29,12 +29,13 @@ export class RGB {
 		return String('#' + this.toHex(this.red) + this.toHex(this.green) + this.toHex(this.blue)).toUpperCase()
 	}
 	
-	public toYUV() {
+	public toYUV(): YUV {
 		let { WR, WG, WB, U_MAX, V_MAX } = yuvConstants,
 		Y = WR * this.red + WB * this.blue + WG * this.green,
 		U = U_MAX * (this.blue - Y) / (1 - WB),
 		V = V_MAX * (this.red - Y) / (1 - WR)
-		return new YUV(Y, U, V);
+
+		return new YUV(Y, U, V)
 	}
 	
 	public distanceTo(other: RGB): number {
