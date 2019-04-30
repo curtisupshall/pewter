@@ -1,13 +1,20 @@
+<!DOCTYPE html>
 <html>
-  <head>
-    <script>
-      var pewter = require('../dist/index.js');
-    </script>
-  </head>
-    <img id="sample" src="sample.jpg"/>
-    <script>
-      var canvas = new Canvas(Document.getElementById('sample'));
-      console.log(canvas);
-    </script>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Pewter</title>
+        <base href='/'>
+    </head>
+    <body>
+        <div id="demo-root"></div>
 
+        <!-- Dependencies -->
+        <script src="./node_modules/react/umd/react.development.js"></script>
+        <script src="./node_modules/react-dom/umd/react-dom.development.js"></script>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+
+        <!-- Main -->
+        <script src="./dist/bundle.js"></script>
+    </body>
 </html>
