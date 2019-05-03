@@ -1,0 +1,48 @@
+body {
+	font-family: 'Roboto', sans-serif;
+}
+
+.swatch {
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+}
+
+.demo-options {
+	li {
+		display: block;
+		height: 64px;
+		line-height: 32px;
+		font-size: 16px;
+		max-width: 250px;
+		font-family: monospace;
+		padding: 8px 16px;
+		box-sizing: border-box;
+
+		h4 {
+			margin: 0 0 12px;
+
+			span {
+				margin-left: 8px;
+				color: #888;
+			}
+		}
+	}
+}
+
+.demo-colors {
+	li {
+		display: block;
+		height: 64px;
+		line-height: 32px;
+		font-size: 16px;
+		max-width: 250px;
+		padding: 8px 16px;
+		box-sizing: border-box;
+	}
+}
+
+.color-warning {
+	color: #888;
+	padding: 8px 16px;
+}

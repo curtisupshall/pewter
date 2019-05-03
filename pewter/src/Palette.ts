@@ -27,7 +27,6 @@ export default class Palette {
 	 * @TODO Make a timer for gathering/calculating
 	 */
 	getColors = (n: number = 1, filter: RGB[] = []): RGB[] => {
-		console.log('Palette.data.length: ', this.canvas.data.length)
 		if (this.canvas.data.length === 0) {
 			return []
 		}
@@ -47,40 +46,34 @@ export default class Palette {
 		let buckets: Bucket[] = []
 		let pixels: RGB[] = this.canvas.data
 		let output: RGB[] = []
-		let sum: number = 0 // DEBUG
-		let count: number = 0
+		// let sum: number = 0 // DEBUG
+		// let count: number = 0
 		for (let i = 0; i < pixels.length; i ++) {
 			for (let j = 0; j < buckets.length; j ++) {
-				try {
+				// try {
 					let distance: number = buckets[j].peek().distanceTo(pixels[i])
-					sum += distance
-					count ++
+					//sum += distance
+					//count ++
 					if (distance <= tolerance) {
-						buckets[j].push(pixels[i ++])
-						j = 0
+						buckets[j].push(pixels[i])
+						// j = 0
 						
-						if (i < pixels.length) {
-							i ++
-						}
-						else break
+						break
 					}
-				} catch (e) {
+				/*} catch (e) {
 					console.log('bad i:', i)
-				}
+				}*/
 			}
 			if (pixels[i]) {
 				buckets.push(new Bucket(pixels[i]))
 			}
 		}
-		// console.log(`from ${pixels.length} pixels, there are ${buckets.length} buckets`);
-		// console.log('buckets before sort:', buckets)
-		console.log('average color dist: ', sum / count)
 		buckets.sort((a, b) => {
 			return a.size() - b.size()
 		})
 		console.log('buckets', buckets)
 		buckets.forEach(bucket => {
-			console.log(`Count: ${bucket.size()}, color: ${bucket.swirl().toCSS()}`)
+			// console.log(`Count: ${bucket.size()}, color: ${bucket.swirl().toCSS()}`)
 		})
 		// console.log('buckets after sort:', buckets)
 		if (filter.length) {
