@@ -14,7 +14,7 @@ var Palette = /** @class */ (function () {
             if (filter === void 0) { filter = []; }
             var tolerance = 0.1;
             var filterTolerance = 0.1;
-            var numThreshold = 0.1;
+            var threshold = 0.1;
             if (n === 0) {
                 return [new RGB_1.RGB()];
             }
@@ -54,7 +54,7 @@ var Palette = /** @class */ (function () {
             output.push(buckets[buckets.length - 1].swirl());
             buckets.pop();
             while (n - 1 > 0 && buckets.length) {
-                while (output[output.length - 1].distanceTo(buckets[buckets.length - 1].swirl()) < numThreshold) {
+                while (output[output.length - 1].distanceTo(buckets[buckets.length - 1].swirl()) < threshold) {
                     if (buckets.length) {
                         buckets.pop();
                     }

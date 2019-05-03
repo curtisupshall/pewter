@@ -209,7 +209,7 @@ var Palette = /** @class */ (function () {
             }
             var tolerance = 5;
             var filterTolerance = 5;
-            var numThreshold = 5;
+            var threshold = 5;
             if (n === 0) {
                 return [new _RGB__WEBPACK_IMPORTED_MODULE_0__["default"]()];
             }
@@ -252,7 +252,7 @@ var Palette = /** @class */ (function () {
             output.push(buckets[buckets.length - 1].swirl());
             buckets.pop();
             while (n - 1 > 0 && buckets.length) {
-                while (output[output.length - 1].distanceTo(buckets[buckets.length - 1].swirl()) < numThreshold) {
+                while (output[output.length - 1].distanceTo(buckets[buckets.length - 1].swirl()) < threshold) {
                     if (buckets.length) {
                         buckets.pop();
                     }

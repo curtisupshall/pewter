@@ -2,11 +2,25 @@ import RGB from './RGB'
 import { Canvas, Image } from './Canvas';
 import { Bucket } from './Bucket';
 
+export interface PaletteOptions {
+	tolerance: number,
+	filterTolerance: number,
+	threshold: number
+}
+
+export const defaultOptions: PaletteOptions = {
+	tolerance: 40,
+	filterTolerance: 70,
+	threshold: 40
+}
+
 export default class Palette {
 	private canvas: Canvas
+	private options: PaletteOptions
 
-	constructor(image?: any) {
+	constructor(image?: any, options?: PaletteOptions) {
 		this.setImage(image)
+		this.setOptions(options)
 	}
 
 	/**
@@ -18,9 +32,7 @@ export default class Palette {
 			return []
 		}
 
-		const tolerance = 40
-		const filterTolerance = 70
-		const numThreshold = 40
+		const { tolerance, filterTolerance, threshold } = this.options
 
 		if (n === 0) {
 			return [new RGB()]
@@ -85,7 +97,7 @@ export default class Palette {
 		output.push(buckets[buckets.length - 1].swirl())
 		buckets.pop()
 		while (n - 1 > 0 && buckets.length) {
-			while (output[output.length - 1].distanceTo(buckets[buckets.length - 1].swirl()) < numThreshold) {
+			while (output[output.length - 1].distanceTo(buckets[buckets.length - 1].swirl()) < threshold) {
 				if (buckets.length) {
 					buckets.pop()
 				}
@@ -102,5 +114,24 @@ export default class Palette {
 
 	setImage = (image?: any) => {
 		this.canvas = new Canvas(image)
+	}
+
+	resetOptions = () => {
+		this.setOptions()
+	}
+
+	setOptions = (options?: any) => {
+		if (!options) {
+			this.options = defaultOptions
+		} else {
+			/**
+			 * @TODO Test without using spread operator, e.g.
+			 * `this.options = options`.
+			 */
+			this.options = {
+				...this.options,
+				...options
+			}
+		}
 	}
 }
