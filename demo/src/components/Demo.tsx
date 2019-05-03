@@ -4,7 +4,7 @@ import * as React from 'react'
 import Palette, { PaletteOptions, defaultOptions } from '../../../pewter/src/Palette'
 import RGB from '../../../pewter/src/RGB'
 
-// import { Slider } from '@material-ui/lab'
+import { Slider } from '@material-ui/lab'
 
 interface IState {
 	colors: RGB[]
@@ -20,13 +20,12 @@ export class Demo extends React.Component<{}, IState> {
 	palette = new Palette()
 	src = 'src/assets/images/sample2.jpg'
 
-	handleValueChange = (event: any) => {
-		console.log('event.target', event.target)
+	handleValueChange = (field: string, value: number) => {
 		this.setState((state: IState) => {
 			return {
 				'options': {
 					...state.options,
-					[event.target.name]: event.target.value
+					[field]: value
 				}
 			}
 		}, () => {
@@ -35,6 +34,12 @@ export class Demo extends React.Component<{}, IState> {
 	}
 
 	componentDidMount() {
+		
+	}
+
+	render() {		
+		const { tolerance, filterTolerance, threshold } = this.state.options
+		
 		let image = new Image(64, 64) 
 		image.src = this.src
 
@@ -42,10 +47,6 @@ export class Demo extends React.Component<{}, IState> {
 			this.palette.setImage(image)
 			this.setState({ colors: this.palette.getColors(3) })
 		}
-	}
-
-	render() {		
-		const { tolerance, filterTolerance, threshold } = this.state.options
 
 		return (
 			<div className='demo-container'>
@@ -56,20 +57,14 @@ export class Demo extends React.Component<{}, IState> {
 						<li key={index}><div className='swatch' style={{backgroundColor: color.toCSS()}} />{`Color ${index + 1}`}</li>
 					))}
 				</ul>
-				<ul>
+				<ul className='demo-options'>
 					<li>
 						<h6>Tolerance</h6>
-						<input
-							type='number'
+						<Slider
 							name='tolerance'
 							value={tolerance}
-							onChange={(event) => this.handleValueChange(event)}
+							onChange={(event: any, value: number) => this.handleValueChange('tolerance', value)}
 						/>
-						{/*<Slider
-							name='tolerance'
-							value={this.state.tolerance}
-							onChange={this.handleValueChange}
-						/>*/}
 					</li>
 				</ul>
 			</div>
