@@ -64,58 +64,76 @@ export class Demo extends React.Component<{}, IState> {
 
 		return (
 			<div className='demo-container'>
-				<img src={this.src} />
-				<h6>{`Colors (${colors.length})`}</h6>
-				<ul className='demo-colors'>
-					{colors.map((color: RGB, index: number) => (
-						<li key={index}>
-							<div className='swatch' style={{backgroundColor: color.toCSS()}} />
-							<h4>{`Color ${index + 1}`}</h4>
-						</li>
-					))}
+				<ul className='demo-header'>
+					<li>
+						<div className='demo-header__title'>
+							<h2><span>pewter</span> - Intelligent color palettes from images.</h2>
+							<a href='https://github.com/curtisupshall'><h5>By @curtisupshall</h5></a>
+						</div>
+					</li>
+					<li>
+						<a href='https://github.com/curtisupshall'>GitHub logo here</a>
+					</li>
 				</ul>
-				<div className='color-warning'>
-					{`⚠️ For ${this.state.colors} colors, try changing Tolerance`}
+				<div>
+					<img src={this.src} />
+					<h6>{`Colors (${colors.length})`}</h6>
+					<ul className='demo-colors'>
+						{colors.map((color: RGB, index: number) => (
+							<li key={index}>
+								<div className='swatch' style={{backgroundColor: color.toCSS()}} />
+								<div className='color-info'>
+									<h3>{`Color ${index + 1}`}</h3>
+									<h5>{color.toCSS()}</h5>
+								</div>
+							</li>
+						))}
+					</ul>
+					<div className='color-warning'>
+						{`⚠️ For ${this.state.numColors} colors, try changing Tolerance`}
+					</div>
 				</div>
-				<ul className='demo-options'>
-					<li>
-						<h4>Tolerance<span>{tolerance}</span></h4>
-						<Slider
-							name='tolerance'
-							value={tolerance}
-							onChange={(event: any, value: number) => this.handleValueChange('tolerance', value)}
-							step={1}
+				<div>
+					<ul className='demo-options'>
+						<li>
+							<h4>Tolerance<span>{tolerance}</span></h4>
+							<Slider
+								name='tolerance'
+								value={tolerance}
+								onChange={(event: any, value: number) => this.handleValueChange('tolerance', value)}
+								step={1}
+							/>
+						</li>
+						<li>
+							<h4>Filter Tolerance<span>{filterTolerance}</span></h4>
+							<Slider
+								name='filterTolerance'
+								value={filterTolerance}
+								onChange={(event: any, value: number) => this.handleValueChange('filterTolerance', value)}
+								step={1}
+							/>
+						</li>
+						<li>
+							<h4>Threshold<span>{threshold}</span></h4>
+							<Slider
+								name='threshold'
+								value={threshold}
+								onChange={(event: any, value: number) => this.handleValueChange('threshold', value)}
+								step={1}
+							/>
+						</li>
+					</ul>
+					<div className='color-options'>
+						<TextField
+							name='numColors'
+							label='Colors'
+							value={this.state.numColors}
+							min={1}
+							max={8}
+							onChange={this.handleNumColorsChange}
 						/>
-					</li>
-					<li>
-						<h4>Filter Tolerance<span>{filterTolerance}</span></h4>
-						<Slider
-							name='filterTolerance'
-							value={filterTolerance}
-							onChange={(event: any, value: number) => this.handleValueChange('filterTolerance', value)}
-							step={1}
-						/>
-					</li>
-					<li>
-						<h4>Threshold<span>{threshold}</span></h4>
-						<Slider
-							name='threshold'
-							value={threshold}
-							onChange={(event: any, value: number) => this.handleValueChange('threshold', value)}
-							step={1}
-						/>
-					</li>
-				</ul>
-				<div className='color-options'>
-					<TextField
-						name='numColors'
-						label='Colors'
-						value={this.state.numColors}
-						min={1}
-						max={8}
-						onChange={this.handleNumColorsChange}
-					/>
-					<Switch value={this.state.filter.enabled} />
+						<Switch value={this.state.filter.enabled} />
+					</div>
 				</div>
 			</div>
 		)
