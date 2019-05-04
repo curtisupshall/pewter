@@ -71,7 +71,7 @@ export default class Palette {
 		buckets.sort((a, b) => {
 			return a.size() - b.size()
 		})
-		console.log('buckets', buckets)
+		// console.log('buckets', buckets)
 		buckets.forEach(bucket => {
 			// console.log(`Count: ${bucket.size()}, color: ${bucket.swirl().toCSS()}`)
 		})

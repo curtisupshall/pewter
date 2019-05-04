@@ -6,7 +6,6 @@ import RGB from '../../../pewter/src/RGB'
 
 import { ImageDialog } from './ImageDialog';
 
-import { Slider } from '@material-ui/lab'
 import {
 	Button,
 	Dialog,
@@ -14,11 +13,13 @@ import {
 	DialogContent,
 	DialogActions,
 	Grow,
-	Icon,
+	IconButton,
 	Snackbar,
 	Switch,
 	TextField
 } from '@material-ui/core'
+// import { CloseIcon } from '@material-ui/icons'
+import { Slider } from '@material-ui/lab'
 
 interface IFilter {
 	enabled: boolean
@@ -31,9 +32,13 @@ interface IState {
 	filter: IFilter
 	src: string
 	dialogOpen: boolean
+	snackbarOpen: boolean
 }
 
-const demoImages = ['sample2']
+const demoImages: string[] = []
+for (let i = 1; i <= 20; i ++) {
+	demoImages.push(`sample (${i})`)
+}
 
 const copyToClipboard = (str: string) => {
 	const el = document.createElement('textarea')
@@ -42,7 +47,11 @@ const copyToClipboard = (str: string) => {
 	el.select()
 	document.execCommand('copy')
 	document.body.removeChild(el)
-	console.log(`Copied ${str} to clipboard`)
+	return 'Copied to clipboard!'
+}
+
+export const getSrc = (filename: string) => {
+	return `src/assets/images/${filename}.jpg`
 }
 
 export class Demo extends React.Component<{}, IState> {
@@ -51,8 +60,9 @@ export class Demo extends React.Component<{}, IState> {
 		numColors: 3,
 		options: defaultOptions,
 		filter: { enabled: false },
-		src: 'src/assets/images/sample2_old.jpg',
-		dialogOpen: false
+		src: getSrc(demoImages[0]),
+		dialogOpen: false,
+		snackbarOpen: false 
 	}
 
 	palette = new Palette()
@@ -92,8 +102,23 @@ export class Demo extends React.Component<{}, IState> {
 		this.setState({ options: defaultOptions })
 	}
 
+	handleCopyToClipboard = (str: string) => {
+		copyToClipboard(str)
+		this.setState({ snackbarOpen: true })
+	}
+
+	handleSnackbarClose = (event: any, reason: string) => {
+		if (reason === 'clickaway') {
+			return
+		}
+
+		this.setState({ snackbarOpen: false })
+	}
+
 	render() {		
 		const { tolerance, filterTolerance, threshold } = this.state.options
+
+		console.log(this.state)
 		
 		let image = new Image(64, 64) 
 		image.src = this.state.src
@@ -128,7 +153,7 @@ export class Demo extends React.Component<{}, IState> {
 					</div>
 					<ul className='demo-colors'>
 						{colors.map((color: RGB, index: number) => (
-							<li key={index} onClick={() => copyToClipboard(color.toCSS())}>
+							<li key={index} onClick={() => this.handleCopyToClipboard(color.toCSS())}>
 								<div className='swatch' style={{backgroundColor: color.toCSS()}} />
 								<div className='color-info'>
 									<h3>{`Color ${index + 1}`}</h3>
@@ -208,6 +233,23 @@ export class Demo extends React.Component<{}, IState> {
 						onDialogClose={this.handleDialogClose}
 					/>
 				</Dialog>
+				<Snackbar
+					anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+					style={{ color: '#FFF' }}
+					open={this.state.snackbarOpen}
+					onClose={this.handleSnackbarClose}
+					autoHideDuration={6000}
+					message={<span>Copied to Clipboard!</span>}
+					action={[
+						<IconButton
+							onClick={this.handleSnackbarClose}
+							key='close'
+							aria-label='Close'
+						>
+							<a color='inherit'>close</a>
+						</IconButton>
+					]}
+				/>
 			</div>
 		)
 	}

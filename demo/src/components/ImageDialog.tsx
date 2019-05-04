@@ -1,5 +1,7 @@
 import * as React from 'react'
 
+import { getSrc } from './Demo'
+
 import {
     Button,
     DialogTitle,
@@ -25,10 +27,10 @@ export class ImageDialog extends React.Component<IProps, IState> {
                 <DialogTitle>Choose Image</DialogTitle>
                 <DialogContent>
                     <div className='image-gallery'>
-                        <img src={this.props.src} />
-                        <ul>
+                        <img className='image-gallery__selected' src={this.props.src} />
+                        <ul className='image-gallery__list'>
                             {this.props.demoImages.map((demoImage: string) => (
-                                <li><img src={`src/assests/images/${demoImage}`} /></li>
+                                <li><img className='image-gallery__image' src={getSrc(demoImage)} /></li>
                             ))}
                         </ul>
                     </div>
