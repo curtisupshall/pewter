@@ -4,12 +4,18 @@ import * as React from 'react'
 import Palette, { PaletteOptions, defaultOptions } from '../../../pewter/src/Palette'
 import RGB from '../../../pewter/src/RGB'
 
+import { ImageDialog } from './ImageDialog';
+
 import { Slider } from '@material-ui/lab'
 import {
 	Button,
 	Dialog,
+	DialogTitle,
+	DialogContent,
+	DialogActions,
 	Grow,
 	Icon,
+	Snackbar,
 	Switch,
 	TextField
 } from '@material-ui/core'
@@ -23,6 +29,20 @@ interface IState {
 	numColors: number
 	options: PaletteOptions
 	filter: IFilter
+	src: string
+	dialogOpen: boolean
+}
+
+const demoImages = ['sample2']
+
+const copyToClipboard = (str: string) => {
+	const el = document.createElement('textarea')
+	el.value = str
+	document.body.appendChild(el)
+	el.select()
+	document.execCommand('copy')
+	document.body.removeChild(el)
+	console.log(`Copied ${str} to clipboard`)
 }
 
 export class Demo extends React.Component<{}, IState> {
@@ -30,11 +50,20 @@ export class Demo extends React.Component<{}, IState> {
 		colors: [],
 		numColors: 3,
 		options: defaultOptions,
-		filter: { enabled: false }
+		filter: { enabled: false },
+		src: 'src/assets/images/sample2_old.jpg',
+		dialogOpen: false
 	}
 
 	palette = new Palette()
-	src = 'src/assets/images/sample2.jpg'
+	
+	handleDialogOpen = () => {
+		this.setState({ dialogOpen: true })
+	}
+
+	handleDialogClose = () => {
+		this.setState({ dialogOpen: false })
+	}
 
 	handleValueChange = (field: string, value: number) => {
 		this.setState((state: IState) => {
@@ -67,7 +96,7 @@ export class Demo extends React.Component<{}, IState> {
 		const { tolerance, filterTolerance, threshold } = this.state.options
 		
 		let image = new Image(64, 64) 
-		image.src = this.src
+		image.src = this.state.src
 
 		image.onload = () => {
 			this.palette.setImage(image)
@@ -92,14 +121,14 @@ export class Demo extends React.Component<{}, IState> {
 				</ul>
 				<div>
 					<div className='image-container'>
-						<img src={this.src} />
-						<div className='image-cover'>
+						<img src={this.state.src} />
+						<a onClick={() => this.handleDialogOpen()} className='image-cover'>
 							<div className='image-cover__label'>Change Image</div>
-						</div>
+						</a>
 					</div>
 					<ul className='demo-colors'>
 						{colors.map((color: RGB, index: number) => (
-							<li key={index}>
+							<li key={index} onClick={() => copyToClipboard(color.toCSS())}>
 								<div className='swatch' style={{backgroundColor: color.toCSS()}} />
 								<div className='color-info'>
 									<h3>{`Color ${index + 1}`}</h3>
@@ -168,6 +197,17 @@ export class Demo extends React.Component<{}, IState> {
 						</div>
 					</div>
 				</div>
+				<Dialog
+					open={this.state.dialogOpen}
+					scroll='paper'
+				>
+					<ImageDialog
+						src={this.state.src}
+						demoImages={demoImages}
+						onImageChange={console.log}
+						onDialogClose={this.handleDialogClose}
+					/>
+				</Dialog>
 			</div>
 		)
 	}
