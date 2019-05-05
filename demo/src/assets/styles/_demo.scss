@@ -170,8 +170,9 @@ body {
 
 .image-gallery {
 	&__selected {
+		display: block;
 		width: 100%;
-		max-width: 100%
+		max-width: 100%;
 		max-height: 35vh;
 		margin: 0 auto 16px;
 	}
@@ -179,22 +180,37 @@ body {
 	&__list {
 		display: grid;
 		grid-gap: 4px;
-		grid-template-columns: repeat(auto-fit, minmax(86px, 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(56px, 1fr));
+		grid-template-rows: repeat(auto-fit, minmax(64px, 1fr));
 		max-height: 30vh;
 		overflow-y: auto;
 
 		li {
-			&.--horizontal {
+			background: red;
 
+			&.--horizontal {
+				grid-column: span 2;
+
+				img {
+					height: 100%;
+				}
 			}
 
 			&.--vertical {
+				grid-row: span 2;
+				grid-column: span 2;
 
+				img {
+					height: 100%;
+					// width: 100%;
+				}
 			}
 		}
 	}
 
 	&__image {
 		width: 100%;
+		display: block;
+		cursor: pointer;
 	}
 }

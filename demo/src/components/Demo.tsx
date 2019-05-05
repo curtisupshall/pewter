@@ -59,7 +59,7 @@ export class Demo extends React.Component<{}, IState> {
 		colors: [],
 		numColors: 3,
 		options: defaultOptions,
-		filter: { enabled: false },
+		filter: { enabled: true },
 		src: getSrc(demoImages[0]),
 		dialogOpen: false,
 		snackbarOpen: false 
@@ -72,7 +72,12 @@ export class Demo extends React.Component<{}, IState> {
 	}
 
 	handleDialogClose = () => {
+		console.log('closing dialog')
 		this.setState({ dialogOpen: false })
+	}
+
+	handleImageChange = (src: string) => {
+		this.setState({ src })
 	}
 
 	handleValueChange = (field: string, value: number) => {
@@ -229,7 +234,7 @@ export class Demo extends React.Component<{}, IState> {
 					<ImageDialog
 						src={this.state.src}
 						demoImages={demoImages}
-						onImageChange={console.log}
+						onImageChange={this.handleImageChange}
 						onDialogClose={this.handleDialogClose}
 					/>
 				</Dialog>
