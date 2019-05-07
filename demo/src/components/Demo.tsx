@@ -2,6 +2,7 @@ import '../assets/styles/main.scss'
 
 import * as React from 'react'
 import Palette, { PaletteOptions, defaultOptions } from '../../../pewter/src/Palette'
+import ColorNames from '../../../pewter/src/ColorNames'
 import RGB from '../../../pewter/src/RGB'
 
 import { ImageDialog } from './ImageDialog';
@@ -133,6 +134,7 @@ export class Demo extends React.Component<{}, IState> {
 		}
 
 		const colors = this.palette.getColors(this.state.numColors)
+		const colorNames: string[] = new ColorNames(colors).names // Need to fix this
 
 		return (
 			<div className='demo-container'>
@@ -161,7 +163,7 @@ export class Demo extends React.Component<{}, IState> {
 							<li key={index} onClick={() => this.handleCopyToClipboard(color.toCSS())}>
 								<div className='swatch' style={{backgroundColor: color.toCSS()}} />
 								<div className='color-info'>
-									<h3>{`Color ${index + 1}`}</h3>
+									<h3>{colorNames[index]}</h3>
 									<h5>{color.toCSS()}</h5>
 								</div>
 							</li>
