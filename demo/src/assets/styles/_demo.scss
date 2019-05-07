@@ -214,3 +214,25 @@ body {
 		cursor: pointer;
 	}
 }
+
+.color-options {
+	display: flex;
+	flex-flow: row;
+	align-items: center;
+	justify-content: space-between;
+
+	.color-counter {
+		font-family: monospace;
+		display: flex;
+		align-items: center;
+		flex-direction: row;
+
+		h3 {
+			margin: 0 8px;
+		}
+	}
+}
+
+.filter-options {
+	padding-left: 16px;
+}

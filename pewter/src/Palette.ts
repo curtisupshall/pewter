@@ -46,14 +46,14 @@ export default class Palette {
 		let buckets: Bucket[] = []
 		let pixels: RGB[] = this.canvas.data
 		let output: RGB[] = []
-		// let sum: number = 0 // DEBUG
-		// let count: number = 0
+		let sum: number = 0 // DEBUG
+		let count: number = 0
 		for (let i = 0; i < pixels.length; i ++) {
 			for (let j = 0; j < buckets.length; j ++) {
 				// try {
 					let distance: number = buckets[j].swirl().distanceTo(pixels[i])
-					//sum += distance
-					//count ++
+					sum += distance
+					count ++
 					if (distance <= tolerance) {
 						buckets[j].push(pixels[i])
 						// j = 0
@@ -68,6 +68,8 @@ export default class Palette {
 				buckets.push(new Bucket(pixels[i]))
 			}
 		}
+		const DEBUG_AVG_DIST = sum / count
+		console.log('Average dist:', DEBUG_AVG_DIST)
 		buckets.sort((a, b) => {
 			return a.size() - b.size()
 		})
@@ -97,7 +99,7 @@ export default class Palette {
 			let color: RGB = buckets.pop().swirl()
 			let exceedsThreshold = true
 			output.forEach((outputColor: RGB) => {
-				if (color.distanceTo(outputColor) < (1/tolerance) * 2 * threshold) {
+				if (color.distanceTo(outputColor) < threshold) {
 					exceedsThreshold = false
 					return
 				}

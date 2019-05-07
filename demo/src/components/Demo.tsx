@@ -14,7 +14,9 @@ import {
 	DialogContent,
 	DialogActions,
 	Grow,
+	Icon,
 	IconButton,
+	Radio,
 	Snackbar,
 	Switch,
 	TextField
@@ -50,6 +52,9 @@ const copyToClipboard = (str: string) => {
 	document.body.removeChild(el)
 	return 'Copied to clipboard!'
 }
+
+const MAX_COLORS = 8
+const MIN_COLORS = 1
 
 export const getSrc = (filename: string) => {
 	return `src/assets/images/${filename}.jpg`
@@ -94,8 +99,30 @@ export class Demo extends React.Component<{}, IState> {
 		})
 	}
 
-	handleNumColorsChange = (event: any) => {
-		this.setState({ numColors: event.target.value })
+	incrementNumColors = () => {
+		this.setState((state: IState) => {
+			if (state.numColors >= MAX_COLORS) {
+				return
+			}
+
+			return {
+				...state, 
+				numColors: state.numColors + 1
+			}
+		})
+	}
+
+	decrementNumColors = () => {
+		this.setState((state: IState) => {
+			if (state.numColors <= MIN_COLORS) {
+				return
+			}
+
+			return {
+				...state, 
+				numColors: state.numColors - 1
+			}
+		})
 	}
 
 	handleFilterChange = (field: string, value: any) => {
@@ -105,7 +132,7 @@ export class Demo extends React.Component<{}, IState> {
 	}
 
 	handleReset = () => {
-		this.setState({ options: defaultOptions })
+		this.setState({ options: defaultOptions, numColors: 3 })
 	}
 
 	handleCopyToClipboard = (str: string) => {
@@ -177,9 +204,21 @@ export class Demo extends React.Component<{}, IState> {
 					)}
 				</div>
 				<div>
+					<div className='color-options'>
+						<div className='color-counter'>
+							<IconButton disabled={this.state.numColors === MIN_COLORS} onClick={() => this.decrementNumColors()}><Icon>remove</Icon></IconButton>
+							<h3>{`${this.state.numColors} Colors`}</h3>
+							<IconButton disabled={this.state.numColors === MAX_COLORS} onClick={() => this.incrementNumColors()}><Icon>add</Icon></IconButton>
+						</div>
+						<Button
+							variant='contained'
+							name='reset'
+							className='reset=button'
+							onClick={() => this.handleReset()}>Reset</Button>
+					</div>
 					<ul className='demo-options'>
 						<li>
-							<h4>Tolerance<span>{tolerance}</span></h4>
+							<h4>Input Tolerance<span>{tolerance}</span></h4>
 							<Slider
 								name='tolerance'
 								value={tolerance}
@@ -188,7 +227,7 @@ export class Demo extends React.Component<{}, IState> {
 							/>
 						</li>
 						<li>
-							<h4>Threshold<span>{threshold}</span></h4>
+							<h4>Output Tolerance<span>{threshold}</span></h4>
 							<Slider
 								name='threshold'
 								value={threshold}
@@ -208,29 +247,26 @@ export class Demo extends React.Component<{}, IState> {
 							</li>
 						</Grow>
 					</ul>
-					<Button
-						variant='contained'
-						name='reset'
-						className='reset=button'
-						onClick={() => this.handleReset()}>Reset</Button>
-					<div className='color-options'>
-						<TextField
-							name='numColors'
-							label='Colors'
-							type='number'
-							value={this.state.numColors}
-							min={1}
-							max={8}
-							onChange={this.handleNumColorsChange}
-						/>
-						<div>
-							<Switch
-								value={this.state.filter.enabled}
-								onChange={(event: any, value: boolean) => this.handleFilterChange('enabled', value)}
-							/>
-							<span>Filter Color</span>
+					<div>
+					<Switch
+						value={this.state.filter.enabled}
+						onChange={(event: any, value: boolean) => this.handleFilterChange('enabled', value)}
+					/>
+					<span>Filter</span>
+					{this.state.filter.enabled && (
+						<div className='filter-options'>
+							<div>
+								<Radio />
+								<span>Recursive</span>
+							</div>
+							<div>
+								<Radio />
+								<span>Custom Color</span>
+								<input type='color' />
+							</div>
 						</div>
-					</div>
+					)}
+				</div>
 				</div>
 				<Dialog
 					open={this.state.dialogOpen}
