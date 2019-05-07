@@ -51,7 +51,7 @@ export default class Palette {
 		for (let i = 0; i < pixels.length; i ++) {
 			for (let j = 0; j < buckets.length; j ++) {
 				// try {
-					let distance: number = buckets[j].peek().distanceTo(pixels[i])
+					let distance: number = buckets[j].swirl().distanceTo(pixels[i])
 					//sum += distance
 					//count ++
 					if (distance <= tolerance) {
@@ -75,7 +75,9 @@ export default class Palette {
 		buckets.forEach(bucket => {
 			// console.log(`Count: ${bucket.size()}, color: ${bucket.swirl().toCSS()}`)
 		})
-		// console.log('buckets after sort:', buckets)
+		// console.log('num buckets after sort:', buckets.length)
+
+		// Buckets are removed from the list based on the filtered color
 		if (filter.length) {
 			buckets = buckets.reduce((arr: Bucket[], bucket: Bucket) => {
 				for (let i = 0; i < filter.length; i ++) {
@@ -87,20 +89,22 @@ export default class Palette {
 				return arr
 			}, [])
 		}
+
 		output.push(buckets[buckets.length - 1].swirl())
 		buckets.pop()
-		while (n - 1 > 0 && buckets.length) {
-			while (output[output.length - 1].distanceTo(buckets[buckets.length - 1].swirl()) < threshold) {
-				if (buckets.length) {
-					buckets.pop()
+		console.log('threshold = ', threshold)
+		for (n --; n > 0 && buckets.length; n --) {
+			let color: RGB = buckets.pop().swirl()
+			let exceedsThreshold = true
+			output.forEach((outputColor: RGB) => {
+				if (color.distanceTo(outputColor) < (1/tolerance) * 2 * threshold) {
+					exceedsThreshold = false
+					return
 				}
-				else {
-					return output
-				}
-			}
-			output.push(buckets[buckets.length - 1].swirl())
-			buckets.pop()			
-			n --
+			})
+			if (exceedsThreshold) {
+				output.push(color)
+			}	
 		}
 		return output
 	}

@@ -121,10 +121,11 @@ export class Demo extends React.Component<{}, IState> {
 		this.setState({ snackbarOpen: false })
 	}
 
-	render() {		
+	render() {
+		console.log('Demo.render()')
 		const { tolerance, filterTolerance, threshold } = this.state.options
 
-		console.log(this.state)
+		// console.log(this.state)
 		
 		let image = new Image(64, 64) 
 		image.src = this.state.src
@@ -169,9 +170,11 @@ export class Demo extends React.Component<{}, IState> {
 							</li>
 						))}
 					</ul>
-					<div className='color-warning'>
-						{`⚠️ For ${this.state.numColors} colors, try changing Tolerance`}
-					</div>
+					{colors.length < this.state.numColors && (
+						<div className='color-warning'>
+							{`⚠️ For ${this.state.numColors} colors, try changing Tolerance`}
+						</div>
+					)}
 				</div>
 				<div>
 					<ul className='demo-options'>
