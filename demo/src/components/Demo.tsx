@@ -5,7 +5,7 @@ import Palette, { PaletteOptions, defaultOptions } from '../../../pewter/src/Pal
 import ColorNames from '../../../pewter/src/ColorNames'
 import RGB from '../../../pewter/src/RGB'
 
-import { ImageDialog } from './ImageDialog';
+// import { ImageDialog } from './ImageDialog';
 
 import {
 	Button,
@@ -33,15 +33,27 @@ interface IState {
 	numColors: number
 	options: PaletteOptions
 	filter: IFilter
-	src: string
-	dialogOpen: boolean
+	// src: string
+	imageIndex: number
+	// dialogOpen: boolean
 	snackbarOpen: boolean
 }
 
-const demoImages: string[] = []
-for (let i = 1; i <= 20; i ++) {
-	demoImages.push(`sample (${i})`)
-}
+const MAX_COLORS = 8
+const MIN_COLORS = 1
+
+const demoImages: string[] = [
+	'image-1',
+	'image-2',
+	'image-3',
+	'image-4',
+	'image-5',
+	'image-6',
+	'image-7',
+	'image-8',
+	'image-9',
+	'image-10',
+]
 
 const copyToClipboard = (str: string) => {
 	const el = document.createElement('textarea')
@@ -53,9 +65,6 @@ const copyToClipboard = (str: string) => {
 	return 'Copied to clipboard!'
 }
 
-const MAX_COLORS = 8
-const MIN_COLORS = 1
-
 export const getSrc = (filename: string) => {
 	return `src/assets/images/${filename}.jpg`
 }
@@ -66,13 +75,15 @@ export class Demo extends React.Component<{}, IState> {
 		numColors: 3,
 		options: defaultOptions,
 		filter: { enabled: true },
-		src: getSrc(demoImages[0]),
-		dialogOpen: false,
-		snackbarOpen: false 
+		// src: getSrc(demoImages[0]),
+		// dialogOpen: false,
+		snackbarOpen: false,
+		imageIndex: 0
 	}
 
 	palette = new Palette()
 	
+	/*
 	handleDialogOpen = () => {
 		this.setState({ dialogOpen: true })
 	}
@@ -84,6 +95,19 @@ export class Demo extends React.Component<{}, IState> {
 
 	handleImageChange = (src: string) => {
 		this.setState({ src })
+	}
+	*/
+
+	handleNextImageChange = () => {
+		this.setState((state: IState) => {
+			return { imageIndex: (state.imageIndex + 1) % (demoImages.length)}
+		})
+	}
+
+	handlePrevImageChange = () => {
+		this.setState((state: IState) => {
+			return { imageIndex: state.imageIndex === 0 ? demoImages.length - 1 : state.imageIndex - 1}
+		})
 	}
 
 	handleValueChange = (field: string, value: number) => {
@@ -151,11 +175,10 @@ export class Demo extends React.Component<{}, IState> {
 	render() {
 		console.log('Demo.render()')
 		const { tolerance, filterTolerance, threshold } = this.state.options
-
-		// console.log(this.state)
+		const src = getSrc(demoImages[this.state.imageIndex])
 		
 		let image = new Image(64, 64) 
-		image.src = this.state.src
+		image.src = src
 
 		image.onload = () => {
 			this.palette.setImage(image)
@@ -180,9 +203,19 @@ export class Demo extends React.Component<{}, IState> {
 					</li>
 				</ul>
 				<div>
+					<div className='image-options'>
+						<div className='image-counter'>
+							<IconButton onClick={this.handlePrevImageChange}><Icon>chevron_left</Icon></IconButton>
+							<h4>{`${this.state.imageIndex + 1} of ${demoImages.length}`}</h4>
+							<IconButton onClick={this.handleNextImageChange}><Icon>chevron_right</Icon></IconButton>
+						</div>
+						<div>
+							<Button variant='contained' color='primary'>Upload Image</Button>
+						</div>
+					</div>
 					<div className='image-container'>
-						<img src={this.state.src} />
-						<a onClick={() => this.handleDialogOpen()} className='image-cover'>
+						<img src={src} />
+						<a /*onClick={() => this.handleDialogOpen()}*/ className='image-cover'>
 							<div className='image-cover__label'>Change Image</div>
 						</a>
 					</div>
@@ -268,6 +301,7 @@ export class Demo extends React.Component<{}, IState> {
 					)}
 				</div>
 				</div>
+				{/*
 				<Dialog
 					open={this.state.dialogOpen}
 					scroll='paper'
@@ -279,6 +313,7 @@ export class Demo extends React.Component<{}, IState> {
 						onDialogClose={this.handleDialogClose}
 					/>
 				</Dialog>
+				*/}
 				<Snackbar
 					anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
 					style={{ color: '#FFF' }}
@@ -292,7 +327,7 @@ export class Demo extends React.Component<{}, IState> {
 							key='close'
 							aria-label='Close'
 						>
-							<a color='inherit'>close</a>
+							<Icon style={{color: 'inherit'}}>close</Icon>
 						</IconButton>
 					]}
 				/>
