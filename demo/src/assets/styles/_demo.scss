@@ -220,6 +220,7 @@ body {
 	flex-flow: row;
 	align-items: center;
 	justify-content: space-between;
+	margin-bottom: 16px;
 
 	.color-counter {
 		font-family: monospace;
@@ -235,4 +236,23 @@ body {
 
 .filter-options {
 	padding-left: 16px;
+}
+
+.image-options {
+	display: flex;
+	flex-flow: row;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 16px;
+
+	.image-counter {
+		font-family: monospace;
+		display: flex;
+		align-items: center;
+		flex-direction: row;
+
+		h3 {
+			margin: 0 8px;
+		}
+	}
 }
