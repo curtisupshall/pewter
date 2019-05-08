@@ -150,6 +150,10 @@ export class Demo extends React.Component<{}, IState> {
 		this.setState({ snackbarOpen: false })
 	}
 
+	onImageLoad = () => {
+		this.forceUpdate()
+	}
+
 	render() {
 		const { tolerance, filterTolerance, threshold } = this.state.options
 		const src = getSrc(demoImages[this.state.imageIndex])
@@ -191,7 +195,7 @@ export class Demo extends React.Component<{}, IState> {
 						</div>
 					</div>
 					<div className='image-container'>
-						<img src={src} />
+						<img src={src} onLoad={this.onImageLoad}/>
 					</div>
 					<ul className='demo-colors'>
 						{colors.map((color: RGB, index: number) => (
