@@ -69,7 +69,7 @@ export default class Palette {
 			}
 		}
 		const DEBUG_AVG_DIST = sum / count
-		console.log('Average dist:', DEBUG_AVG_DIST)
+		// console.log('Average dist:', DEBUG_AVG_DIST)
 		buckets.sort((a, b) => {
 			return a.size() - b.size()
 		})
@@ -94,7 +94,7 @@ export default class Palette {
 
 		output.push(buckets[buckets.length - 1].swirl())
 		buckets.pop()
-		console.log('threshold = ', threshold)
+		// console.log('threshold = ', threshold)
 		for (n --; n > 0 && buckets.length; n --) {
 			let color: RGB = buckets.pop().swirl()
 			let exceedsThreshold = true

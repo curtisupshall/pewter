@@ -5,8 +5,6 @@ import Palette, { PaletteOptions, defaultOptions } from '../../../pewter/src/Pal
 import ColorNames from '../../../pewter/src/ColorNames'
 import RGB from '../../../pewter/src/RGB'
 
-// import { ImageDialog } from './ImageDialog';
-
 import {
 	Button,
 	Dialog,
@@ -21,7 +19,6 @@ import {
 	Switch,
 	TextField
 } from '@material-ui/core'
-// import { CloseIcon } from '@material-ui/icons'
 import { Slider } from '@material-ui/lab'
 
 interface IFilter {
@@ -33,9 +30,7 @@ interface IState {
 	numColors: number
 	options: PaletteOptions
 	filter: IFilter
-	// src: string
 	imageIndex: number
-	// dialogOpen: boolean
 	snackbarOpen: boolean
 }
 
@@ -66,7 +61,7 @@ const copyToClipboard = (str: string) => {
 }
 
 export const getSrc = (filename: string) => {
-	return `src/assets/images/${filename}.jpg`
+	return `static/images/${filename}.jpg`
 }
 
 export class Demo extends React.Component<{}, IState> {
@@ -75,28 +70,11 @@ export class Demo extends React.Component<{}, IState> {
 		numColors: 3,
 		options: defaultOptions,
 		filter: { enabled: true },
-		// src: getSrc(demoImages[0]),
-		// dialogOpen: false,
 		snackbarOpen: false,
 		imageIndex: 0
 	}
 
 	palette = new Palette()
-	
-	/*
-	handleDialogOpen = () => {
-		this.setState({ dialogOpen: true })
-	}
-
-	handleDialogClose = () => {
-		console.log('closing dialog')
-		this.setState({ dialogOpen: false })
-	}
-
-	handleImageChange = (src: string) => {
-		this.setState({ src })
-	}
-	*/
 
 	handleNextImageChange = () => {
 		this.setState((state: IState) => {
@@ -173,7 +151,6 @@ export class Demo extends React.Component<{}, IState> {
 	}
 
 	render() {
-		console.log('Demo.render()')
 		const { tolerance, filterTolerance, threshold } = this.state.options
 		const src = getSrc(demoImages[this.state.imageIndex])
 		
@@ -193,7 +170,7 @@ export class Demo extends React.Component<{}, IState> {
 					<li>
 						<div className='demo-header__title'>
 							<h2><span>pewter</span> - Intelligent color palettes from images.</h2>
-							<a href='https://github.com/curtisupshall'><h5>By @curtisupshall</h5></a>
+							<a href='https://curtisupshall.com'><h5>By Curtis Upshall</h5></a>
 						</div>
 					</li>
 					<li>
@@ -206,18 +183,15 @@ export class Demo extends React.Component<{}, IState> {
 					<div className='image-options'>
 						<div className='image-counter'>
 							<IconButton onClick={this.handlePrevImageChange}><Icon>chevron_left</Icon></IconButton>
-							<h4>{`${this.state.imageIndex + 1} of ${demoImages.length}`}</h4>
+							<h4>{`Image ${this.state.imageIndex + 1} of ${demoImages.length}`}</h4>
 							<IconButton onClick={this.handleNextImageChange}><Icon>chevron_right</Icon></IconButton>
 						</div>
 						<div>
-							<Button variant='contained' color='primary'>Upload Image</Button>
+							<Button disabled variant='contained' color='primary'>Upload Image</Button>
 						</div>
 					</div>
 					<div className='image-container'>
 						<img src={src} />
-						<a /*onClick={() => this.handleDialogOpen()}*/ className='image-cover'>
-							<div className='image-cover__label'>Change Image</div>
-						</a>
 					</div>
 					<ul className='demo-colors'>
 						{colors.map((color: RGB, index: number) => (
@@ -301,19 +275,6 @@ export class Demo extends React.Component<{}, IState> {
 					)}
 				</div>
 				</div>
-				{/*
-				<Dialog
-					open={this.state.dialogOpen}
-					scroll='paper'
-				>
-					<ImageDialog
-						src={this.state.src}
-						demoImages={demoImages}
-						onImageChange={this.handleImageChange}
-						onDialogClose={this.handleDialogClose}
-					/>
-				</Dialog>
-				*/}
 				<Snackbar
 					anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
 					style={{ color: '#FFF' }}

@@ -4,7 +4,8 @@
   "description": "Intelligent color palettes from images.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build:dev": "webpack --mode=development",
+    "build:prod": "webpack --mode=production"
   },
   "author": "Curtis Upshall",
   "license": "ISC",
