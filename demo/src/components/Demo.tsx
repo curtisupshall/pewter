@@ -23,7 +23,10 @@ import { Slider } from '@material-ui/lab'
 
 interface IFilter {
 	enabled: boolean
+	type: FilterType
 }
+
+type FilterType = 'custom' | 'recursive'
 
 interface IState {
 	colors: RGB[]
@@ -69,7 +72,7 @@ export class Demo extends React.Component<{}, IState> {
 		colors: [],
 		numColors: 3,
 		options: defaultOptions,
-		filter: { enabled: true },
+		filter: { enabled: true, type: 'recursive' },
 		snackbarOpen: false,
 		imageIndex: 0
 	}
@@ -151,6 +154,7 @@ export class Demo extends React.Component<{}, IState> {
 	}
 
 	onImageLoad = () => {
+		console.log('onImageLoad()')
 		this.forceUpdate()
 	}
 
@@ -162,6 +166,7 @@ export class Demo extends React.Component<{}, IState> {
 		image.src = src
 
 		image.onload = () => {
+			console.log('image.onLoad()')
 			this.palette.setImage(image)
 		}
 
@@ -267,11 +272,11 @@ export class Demo extends React.Component<{}, IState> {
 					{this.state.filter.enabled && (
 						<div className='filter-options'>
 							<div>
-								<Radio />
+								<Radio value='recursive' checked={this.state.filter.type === 'recursive'}/>
 								<span>Recursive</span>
 							</div>
 							<div>
-								<Radio />
+								<Radio value='custom'/>
 								<span>Custom Color</span>
 								<input type='color' />
 							</div>
