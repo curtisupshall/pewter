@@ -49,7 +49,7 @@ const demoImages: string[] = [
 	'image-6',
 	'image-7',
 	'image-8',
-	'image-9',
+	// 'image-9',
 	'image-10',
 ]
 
@@ -72,7 +72,7 @@ export class Demo extends React.Component<{}, IState> {
 		colors: [],
 		numColors: 3,
 		options: defaultOptions,
-		filter: { enabled: true, type: 'recursive' },
+		filter: { enabled: false, type: 'recursive' },
 		snackbarOpen: false,
 		imageIndex: 0
 	}
@@ -183,7 +183,7 @@ export class Demo extends React.Component<{}, IState> {
 						</div>
 					</li>
 					<li>
-						<a href='https://github.com/curtisupshall/pewter'>
+						<a href='https://github.com/curtisupshall'>
 							<img className='octocat' src='src/assets/images/octocat.svg' />
 						</a>
 					</li>
@@ -264,25 +264,27 @@ export class Demo extends React.Component<{}, IState> {
 						</Grow>
 					</ul>
 					<div>
-					<Switch
-						value={this.state.filter.enabled}
-						onChange={(event: any, value: boolean) => this.handleFilterChange('enabled', value)}
-					/>
-					<span>Filter</span>
-					{this.state.filter.enabled && (
-						<div className='filter-options'>
-							<div>
-								<Radio value='recursive' checked={this.state.filter.type === 'recursive'}/>
-								<span>Recursive</span>
+						{/*
+						<Switch
+							value={this.state.filter.enabled}
+							onChange={(event: any, value: boolean) => this.handleFilterChange('enabled', value)}
+						/>
+						<span>Filter</span>
+						{this.state.filter.enabled && (
+							<div className='filter-options'>
+								<div>
+									<Radio value='recursive' checked={this.state.filter.type === 'recursive'}/>
+									<span>Recursive</span>
+								</div>
+								<div>
+									<Radio value='custom'/>
+									<span>Custom Color</span>
+									<input type='color' />
+								</div>
 							</div>
-							<div>
-								<Radio value='custom'/>
-								<span>Custom Color</span>
-								<input type='color' />
-							</div>
-						</div>
-					)}
-				</div>
+						)}
+						*/}
+					</div>
 				</div>
 				<Snackbar
 					anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
