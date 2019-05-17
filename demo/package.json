@@ -21,9 +21,9 @@
     "style-loader": "^0.23.1",
     "ts-loader": "^5.4.5",
     "typescript": "^3.4.5",
-    "webpack": "^4.30.0",
-    "webpack-cli": "^3.3.1",
-    "webpack-dev-server": "^3.3.1"
+    "webpack": "^4.31.0",
+    "webpack-cli": "^3.3.2",
+    "webpack-dev-server": "^3.4.0"
   },
   "dependencies": {
     "@material-ui/core": "^3.9.3",
@@ -31,7 +31,7 @@
     "@material-ui/lab": "^3.0.0-alpha.30",
     "@types/classnames": "^2.2.7",
     "@types/material-ui": "^0.21.6",
-    "@types/react": "^16.8.15",
+    "@types/react": "^16.8.17",
     "@types/react-dom": "^16.8.4",
     "classnames": "^2.2.6",
     "react": "^16.8.6",
