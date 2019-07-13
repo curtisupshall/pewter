@@ -1,2 +1,4 @@
-demo/node_modules/
-pewter/node_modules/
+/demo/**/dist
+/lib
+/node_modules
+/demo/**/dist
