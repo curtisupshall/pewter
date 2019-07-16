@@ -1,9 +1,9 @@
 import '../assets/styles/main.scss'
 
 import * as React from 'react'
-import Palette, { PaletteOptions, defaultOptions } from '../../../pewter/src/Palette'
-import ColorNames from '../../../pewter/src/ColorNames'
-import RGB from '../../../pewter/src/RGB'
+import Palette, { PaletteOptions, defaultOptions } from '../../src/Palette'
+import ColorNames from '../../src/ColorNames'
+import RGB from '../../src/RGB'
 
 import {
 	Button,
@@ -19,7 +19,7 @@ import {
 	Switch,
 	TextField
 } from '@material-ui/core'
-import { Slider } from '@material-ui/lab'
+//import { Slider } from '@material-ui/lab'
 
 interface IFilter {
 	enabled: boolean
@@ -235,31 +235,37 @@ export class Demo extends React.Component<{}, IState> {
 					<ul className='demo-options'>
 						<li>
 							<h4>Input Tolerance<span>{tolerance}</span></h4>
+							{/*
 							<Slider
 								name='tolerance'
 								value={tolerance}
 								onChange={(event: any, value: number) => this.handleValueChange('tolerance', value)}
 								step={1}
+							*/}
 							/>
 						</li>
 						<li>
 							<h4>Output Tolerance<span>{threshold}</span></h4>
+							{/*
 							<Slider
 								name='threshold'
 								value={threshold}
 								onChange={(event: any, value: number) => this.handleValueChange('threshold', value)}
 								step={1}
 							/>
+							*/}
 						</li>
 						<Grow in={this.state.filter.enabled}>
 							<li>
 								<h4>Filter Tolerance<span>{filterTolerance}</span></h4>
+								{/*
 								<Slider
 									name='filterTolerance'
 									value={filterTolerance}
 									onChange={(event: any, value: number) => this.handleValueChange('filterTolerance', value)}
 									step={1}
 								/>
+								*/}
 							</li>
 						</Grow>
 					</ul>
@@ -295,7 +301,7 @@ export class Demo extends React.Component<{}, IState> {
 					message={<span>Copied to Clipboard!</span>}
 					action={[
 						<IconButton
-							onClick={this.handleSnackbarClose}
+							// onClick={this.handleSnackbarClose}
 							key='close'
 							aria-label='Close'
 						>
