@@ -1,6 +1,8 @@
 import RGB from './RGB'
 import { Canvas, Image } from './Canvas';
 import { Bucket } from './Bucket';
+import ColorNames from './ColorNames';
+import { KdTree, KdTreeNode } from './KdTree';
 
 export interface PaletteOptions {
 	tolerance: number,
@@ -16,11 +18,23 @@ export const defaultOptions: PaletteOptions = {
 
 export default class Palette {
 	private canvas: Canvas
+	private dictionary: KdTree<string>
 	private options: PaletteOptions
 
 	constructor(image?: any, options?: PaletteOptions) {
-		this.setImage(image)
+		this.canvas = new Canvas(image)
 		this.setOptions(options)
+
+		// Create dictionary tree
+		this.dictionary = new KdTree<string>(dictionary.map((entry: any) => {
+			return new KdTreeNode<string>(entry[0], entry[1])
+		})
+	}
+
+	static getNames = (colors: RGB[]): string[] => {
+		return colors.map((color: RGB) => {
+			return this.dictionary.nearestNeighbor(color).data
+		})
 	}
 
 	/**
@@ -109,10 +123,6 @@ export default class Palette {
 			}	
 		}
 		return output
-	}
-
-	setImage = (image?: any) => {
-		this.canvas = new Canvas(image)
 	}
 
 	resetOptions = () => {
