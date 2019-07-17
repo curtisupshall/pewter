@@ -12,11 +12,13 @@ export class KdTree<T> {
     public data: KdTreeNode<T>
     public left: KdTree<T>
     public right: KdTree<T>
+    private dimensions: number
 
     constructor (k: number, elements: KdTreeNode<T>[], depth: number = 0) {
         if (elements.length === 0) {
             return
         }
+        this.dimensions = k
 
         // Determine axis
         const axis: number = depth % k
@@ -39,13 +41,38 @@ export class KdTree<T> {
      * @param vector The given vector to find the nearest neighbor.
      * @return
      */
-    public nearestNeighbor = (vector: number[]) => {
-        let nearestNeighbor: KdTreeNode<T> = this.data
+    public nearestNeighbor = (vector: number[]): KdTreeNode<T> => {
+        let nearestDistance: number
+        let axis: number
+
         let depth: number = 0
+        let current: KdTree<T> = this
+        let nearestNeighbor: KdTreeNode<T> = this.data
         for(;;) {
-            let nearestDistance: number = this.distance(vector, nearestNeighbor.vector)
+            // Base case (root node)
+            if (!current.left && !current.right) {
+                return nearestNeighbor
+            }
+
+            // Determine axis
+            axis = depth % this.dimensions
+            nearestDistance = this.distance(vector, nearestNeighbor.vector)
             
-            
+            // Recurse either left or right
+            if (this.data.vector[axis] < this.left.data.vector[axis]) {
+                // Traverse left
+                current = this.left
+            } else {
+                // Traverse right
+                current = this.right
+            }
+
+            // Check if this tree should become our nearest neighbor
+            if (this.distance(current.data.vector, nearestNeighbor.vector) < nearestDistance) {
+                nearestNeighbor = current.data
+            }
+
+            depth ++
         }
     }
 
