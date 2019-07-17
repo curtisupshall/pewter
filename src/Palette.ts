@@ -22,13 +22,14 @@ export default class Palette {
 	private options: PaletteOptions
 
 	constructor(image?: any, options?: PaletteOptions) {
-		this.canvas = new Canvas(image)
-		this.setOptions(options)
+		//this.canvas = new Canvas(image)
+		//this.setOptions(options)
 
 		// Create dictionary tree
-		this.dictionary = new KdTree<string>(3, dictionary.map((entry: any) => {
+		const dict: KdTreeNode<string>[] =  dictionary.map((entry: any) => {
 			return new KdTreeNode<string>(entry[0], entry[1])
-		}))
+		})
+		this.dictionary = new KdTree<string>(3, dict)
 	}
 
 	public getNames = (colors: RGB[]): string[] => {

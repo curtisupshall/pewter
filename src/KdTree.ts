@@ -9,16 +9,25 @@ export class KdTreeNode<T> {
 }
 
 export class KdTree<T> {
-    public data: KdTreeNode<T>
-    public left: KdTree<T>
-    public right: KdTree<T>
+    protected data: KdTreeNode<T>
+    protected left: KdTree<T>
+    protected right: KdTree<T>
     private dimensions: number
 
     constructor (k: number, elements: KdTreeNode<T>[], depth: number = 0) {
-        if (elements.length === 0) {
+        const n: number = elements.length
+        if (n === 0) {
             return
         }
         this.dimensions = k
+
+        // Select the median element
+        const medianIndex: number = Math.ceil(elements.length / 2)
+        this.data = elements[medianIndex] || elements[0]
+
+        if (n === 1) {
+            return
+        }
 
         // Determine axis
         const axis: number = depth % k
@@ -27,12 +36,14 @@ export class KdTree<T> {
         elements.sort((a: KdTreeNode<T>, b: KdTreeNode<T>) => {
             return a.vector[axis] - b.vector[axis]
         })
-
-        // Select the median element
-        const medianIndex: number = Math.ceil(elements.length / 2)
-        this.data = elements[medianIndex]
-        this.left = new KdTree<T>(k, elements.slice(0, medianIndex), depth + 1)
-        this.right = new KdTree<T>(k, elements.slice(medianIndex + 1, elements.length), depth + 1)
+        const lower: KdTreeNode<T>[] = elements.slice(0, medianIndex)
+        const upper: KdTreeNode<T>[] = elements.slice(medianIndex + 1, elements.length)
+        if (lower.length) {
+            this.left = new KdTree<T>(k, lower, depth + 1)
+        }
+        if (upper.length) {
+            this.right = new KdTree<T>(k, upper, depth + 1)
+        }
     }
 
     /**
@@ -42,38 +53,41 @@ export class KdTree<T> {
      * @return
      */
     public nearestNeighbor = (vector: number[]): KdTreeNode<T> => {
-        let nearestDistance: number
         let axis: number
-
-        let depth: number = 0
         let current: KdTree<T> = this
         let nearestNeighbor: KdTreeNode<T> = this.data
-        for(;;) {
-            // Base case (root node)
-            if (!current.left && !current.right) {
-                return nearestNeighbor
-            }
-
+        let nearestDistance: number = this.distance(vector, nearestNeighbor.vector)
+        for (let depth: number = 0; current.left || current.right; depth ++) {
+            //console.log('nearestNeighbor()')
             // Determine axis
             axis = depth % this.dimensions
-            nearestDistance = this.distance(vector, nearestNeighbor.vector)
             
             // Recurse either left or right
-            if (this.data.vector[axis] < this.left.data.vector[axis]) {
+            if (!current.right || current.data.vector[axis] > vector[axis]) {
                 // Traverse left
-                current = this.left
+                if (!current.left) {
+                    break
+                }
+                current = current.left
             } else {
                 // Traverse right
-                current = this.right
+                if (!current.right) {
+                    break
+                }
+                current = current.right
             }
 
             // Check if this tree should become our nearest neighbor
-            if (this.distance(current.data.vector, nearestNeighbor.vector) < nearestDistance) {
+            const distance = this.distance(current.data.vector, nearestNeighbor.vector)
+            if (distance < nearestDistance) {
+                nearestDistance = distance
+                console.log('new dist:', distance)
+                console.log(`vector: [${current.data.vector[0]}, ${current.data.vector[1]}, ${current.data.vector[2]}]`)
                 nearestNeighbor = current.data
+                
             }
-
-            depth ++
         }
+        return nearestNeighbor
     }
 
     /**
