@@ -18,15 +18,23 @@ export default class RGB {
 		this.green = g
 		this.blue = b
 	}
+
+	public distanceTo(other: RGB): number {
+		return this.toYUV().distanceTo(other.toYUV())
+	}
+
+	public toArray = () => {
+		return [this.red, this.green, this.blue]
+	}
+
+	public toCSS(): string {
+		return String('#' + this.toHex(this.red) + this.toHex(this.green) + this.toHex(this.blue)).toUpperCase()
+	}
 	
 	private toHex(number: number, maxLength:number = 2): string {
 		let hex = number.toString(16)
 		while (maxLength > hex.length) hex = '0' + hex
 		return hex
-	}
-	
-	public toCSS(): string {
-		return String('#' + this.toHex(this.red) + this.toHex(this.green) + this.toHex(this.blue)).toUpperCase()
 	}
 	
 	public toYUV(): YUV {
@@ -36,9 +44,5 @@ export default class RGB {
 		V = V_MAX * (this.red - Y) / (1 - WR)
 
 		return new YUV(Y, U, V)
-	}
-	
-	public distanceTo(other: RGB): number {
-		return this.toYUV().distanceTo(other.toYUV())
 	}
 }
