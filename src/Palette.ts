@@ -22,8 +22,8 @@ export default class Palette {
 	private options: PaletteOptions
 
 	constructor(image?: any, options?: PaletteOptions) {
-		//this.canvas = new Canvas(image)
-		//this.setOptions(options)
+		this.setImage(image)
+		this.setOptions(options)
 
 		// Create dictionary tree
 		const dict: KdTreeNode<string>[] =  dictionary.map((entry: any) => {
@@ -130,7 +130,11 @@ export default class Palette {
 		this.setOptions()
 	}
 
-	setOptions = (options?: any) => {
+	setImage = (image?: any): void => {
+		this.canvas = new Canvas(image)
+	}
+
+	setOptions = (options?: any): void => {
 		if (!options) {
 			this.options = defaultOptions
 		} else {
