@@ -2,24 +2,18 @@ import '../assets/styles/main.scss'
 
 import * as React from 'react'
 import Palette, { PaletteOptions, defaultOptions } from '../../src/Palette'
-import ColorNames from '../../src/ColorNames'
 import RGB from '../../src/RGB'
 
 import {
 	Button,
-	Dialog,
-	DialogTitle,
-	DialogContent,
-	DialogActions,
 	Grow,
 	Icon,
 	IconButton,
 	Radio,
+	Slider,
 	Snackbar,
-	Switch,
-	TextField
+	Switch
 } from '@material-ui/core'
-//import { Slider } from '@material-ui/lab'
 
 interface IFilter {
 	enabled: boolean
@@ -171,7 +165,7 @@ export class Demo extends React.Component<{}, IState> {
 		}
 
 		const colors = this.palette.getColors(this.state.numColors)
-		const colorNames: string[] = new ColorNames(colors).names // Need to fix this
+		const colorNames: string[] = this.palette.getNames(colors)
 
 		return (
 			<div className='demo-container'>
@@ -235,42 +229,35 @@ export class Demo extends React.Component<{}, IState> {
 					<ul className='demo-options'>
 						<li>
 							<h4>Input Tolerance<span>{tolerance}</span></h4>
-							{/*
 							<Slider
 								name='tolerance'
 								value={tolerance}
 								onChange={(event: any, value: number) => this.handleValueChange('tolerance', value)}
 								step={1}
-							*/}
 							/>
 						</li>
 						<li>
 							<h4>Output Tolerance<span>{threshold}</span></h4>
-							{/*
 							<Slider
 								name='threshold'
 								value={threshold}
 								onChange={(event: any, value: number) => this.handleValueChange('threshold', value)}
 								step={1}
 							/>
-							*/}
 						</li>
 						<Grow in={this.state.filter.enabled}>
 							<li>
 								<h4>Filter Tolerance<span>{filterTolerance}</span></h4>
-								{/*
 								<Slider
 									name='filterTolerance'
 									value={filterTolerance}
 									onChange={(event: any, value: number) => this.handleValueChange('filterTolerance', value)}
 									step={1}
 								/>
-								*/}
 							</li>
 						</Grow>
 					</ul>
 					<div>
-						{/*
 						<Switch
 							value={this.state.filter.enabled}
 							onChange={(event: any, value: boolean) => this.handleFilterChange('enabled', value)}
