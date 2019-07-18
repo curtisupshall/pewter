@@ -58,7 +58,7 @@ const copyToClipboard = (str: string) => {
 }
 
 export const getSrc = (filename: string) => {
-	return `static/images/${filename}.jpg`
+	return `demo/assets/images/${filename}.jpg`
 }
 
 export class Demo extends React.Component<{}, IState> {
@@ -178,7 +178,7 @@ export class Demo extends React.Component<{}, IState> {
 					</li>
 					<li>
 						<a href='https://github.com/curtisupshall'>
-							<img className='octocat' src='src/assets/images/octocat.svg' />
+							<img className='octocat' src='demo/assets/images/octocat.svg' />
 						</a>
 					</li>
 				</ul>
