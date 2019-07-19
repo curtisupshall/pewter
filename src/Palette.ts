@@ -22,8 +22,8 @@ export default class Palette {
 	private options: PaletteOptions
 
 	constructor(image?: any, options?: PaletteOptions) {
-		this.setImage(image)
-		this.setOptions(options)
+		//this.setImage(image)
+		//this.setOptions(options)
 
 		// Create dictionary tree
 		const dict: KdTreeNode<string>[] =  dictionary.map((entry: any) => {

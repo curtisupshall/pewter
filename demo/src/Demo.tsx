@@ -6,10 +6,12 @@ import RGB from '../../src/RGB'
 
 import {
 	Button,
+	Fade,
 	Grow,
 	Icon,
 	IconButton,
 	Radio,
+	Slide,
 	Slider,
 	Snackbar,
 	Switch
@@ -148,7 +150,6 @@ export class Demo extends React.Component<{}, IState> {
 	}
 
 	onImageLoad = () => {
-		console.log('onImageLoad()')
 		this.forceUpdate()
 	}
 
@@ -160,7 +161,6 @@ export class Demo extends React.Component<{}, IState> {
 		image.src = src
 
 		image.onload = () => {
-			console.log('image.onLoad()')
 			this.palette.setImage(image)
 		}
 
@@ -245,7 +245,7 @@ export class Demo extends React.Component<{}, IState> {
 								step={1}
 							/>
 						</li>
-						<Grow in={this.state.filter.enabled}>
+						<Fade in={this.state.filter.enabled}>
 							<li>
 								<h4>Filter Tolerance<span>{filterTolerance}</span></h4>
 								<Slider
@@ -255,7 +255,7 @@ export class Demo extends React.Component<{}, IState> {
 									step={1}
 								/>
 							</li>
-						</Grow>
+						</Fade>
 					</ul>
 					<div>
 						<Switch
@@ -263,7 +263,7 @@ export class Demo extends React.Component<{}, IState> {
 							onChange={(event: any, value: boolean) => this.handleFilterChange('enabled', value)}
 						/>
 						<span>Filter</span>
-						{this.state.filter.enabled && (
+						<Fade in={this.state.filter.enabled}>
 							<div className='filter-options'>
 								<div>
 									<Radio value='recursive' checked={this.state.filter.type === 'recursive'}/>
@@ -275,8 +275,7 @@ export class Demo extends React.Component<{}, IState> {
 									<input type='color' />
 								</div>
 							</div>
-						)}
-						*/}
+						</Fade>
 					</div>
 				</div>
 				<Snackbar

@@ -22,7 +22,7 @@ export class KdTree<T> {
         this.dimensions = k
 
         // Select the median element
-        const medianIndex: number = Math.ceil(elements.length / 2)
+        const medianIndex: number = Math.ceil((elements.length - 1) / 2)
         this.data = elements[medianIndex] || elements[0]
 
         if (n === 1) {
@@ -63,7 +63,7 @@ export class KdTree<T> {
             axis = depth % this.dimensions
             
             // Recurse either left or right
-            if (!current.right || current.data.vector[axis] > vector[axis]) {
+            if (!current.right || current.data.vector[axis] < vector[axis]) {
                 // Traverse left
                 if (!current.left) {
                     break
@@ -81,8 +81,8 @@ export class KdTree<T> {
             const distance = this.distance(current.data.vector, nearestNeighbor.vector)
             if (distance < nearestDistance) {
                 nearestDistance = distance
-                console.log('new dist:', distance)
-                console.log(`vector: [${current.data.vector[0]}, ${current.data.vector[1]}, ${current.data.vector[2]}]`)
+                // console.log('new dist:', distance)
+                // console.log(`vector: [${current.data.vector[0]}, ${current.data.vector[1]}, ${current.data.vector[2]}]`)
                 nearestNeighbor = current.data
                 
             }
