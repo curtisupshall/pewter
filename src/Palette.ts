@@ -34,7 +34,7 @@ export default class Palette {
 
 	public getNames = (colors: RGB[]): string[] => {
 		return colors.map((color: RGB) => {
-			return this.dictionary.nearestNeighbor(color.toArray()).value
+			return this.dictionary.nearest(color.toArray()).value
 		})
 	}
 

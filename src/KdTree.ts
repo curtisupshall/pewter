@@ -79,8 +79,10 @@ export class KdTree<T> {
     /**
      * Recursive implementation of nearestNeighbor.
      */
-    public nearest = (node: KdTree<T>, goal: number[], best: KdTreeNode<T>, depth: number = 0): KdTreeNode<T> => {
-        if (node == null) {
+    public nearest = (goal: number[], node: KdTree<T> = this, best: KdTreeNode<T> = this.data, depth: number = 0): KdTreeNode<T> => {
+        //console.log(node.data.value)
+        if (!node) {
+            console.log('node === null')
             return best
         }
         if (distance(node.data.vector, goal) < distance(best.vector, goal)) {
@@ -91,19 +93,20 @@ export class KdTree<T> {
         let bad: KdTree<T>
 
         if (goal[axis] <  node.data.vector[axis]) { // (according to n's comparator):
-            good = node.left
-            bad = node.right
+            good = node.left || null
+            bad = node.right || null
         } else {
-            good = node.right
-            bad = node.left
+            good = node.right || null
+            bad = node.left || null
         }
-        best = this.nearest(good, goal, best, depth + 1)
+        best = this.nearest(goal, good, best, depth + 1)
         let optimistic: number[] = goal
         optimistic[axis] = node.data.vector[axis]
         if (distance(optimistic, goal) < distance(best.vector, goal)) {
             // case when bad split could still have something useful
-            best = this.nearest(bad, goal, best, depth + 1)
-        }
+            console.log('Checking bad side')
+            best = this.nearest(goal, bad, best, depth + 1)
+        } else console.log("Skipping bad side")
         return best
     }
 
