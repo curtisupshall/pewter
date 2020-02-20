@@ -1,45 +1,35 @@
 {
-  "author": "Curtis Upshall",
-  "description": "Intelligent color palettes from images.",
-  "dependencies": {
-    "node": "^12.1.0"
-  },
-  "devDependencies": {
-    "@material-ui/core": "^4.2.0",
-    "@material-ui/icons": "^4.2.1",
-    "@types/classnames": "^2.2.9",
-    "@types/material-ui": "^0.21.6",
-    "@types/node": "^12.6.6",
-    "@types/react": "^16.8.23",
-    "@types/react-dom": "^16.8.4",
-    "classnames": "^2.2.6",
-    "css-loader": "^3.0.0",
-    "file-loader": "^4.0.0",
-    "node-sass": "^4.12.0",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "resolve-url-loader": "^3.1.0",
-    "sass-loader": "^7.1.0",
-    "source-map-loader": "^0.2.4",
-    "style-loader": "^0.23.1",
-    "ts-loader": "^6.0.4",
-    "typescript": "^3.5.3",
-    "webpack": "^4.35.3",
-    "webpack-cli": "^3.3.6",
-    "webpack-dev-server": "^3.7.2"
-  },
-  "files": [
-    "/lib",
-    "index.d.ts"
-  ],
-  "license": "ISC",
-  "main": "lib/index.js",
-  "name": "pewter",
+  "name": "pewter2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "build:demo": "webpack -more=development",
-    "demo-server": "webpack-dev-server",
-    "prepare": "rm lib -rf && tsc"
+    "build-demo": "webpack --mode=development",
+    "demo-server": "webpack-dev-server --mode=development",
+    "watch": "webpack --mode=development --watch"
   },
-  "version": "0.0.1"
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/react": "^16.9.17",
+    "@types/react-dom": "^16.9.4",
+    "css-loader": "^3.4.0",
+    "file-loader": "^5.0.2",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "resolve-url-loader": "^3.1.1",
+    "sass-loader": "^8.0.0",
+    "source-map-loader": "^0.2.4",
+    "style-loader": "^1.1.2",
+    "ts-loader": "^6.2.1",
+    "tsc": "^1.20150623.0",
+    "typescript": "^3.7.4",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.10.1"
+  },
+  "dependencies": {
+    "color-name-list": "^4.11.0"
+  }
 }

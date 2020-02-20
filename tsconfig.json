@@ -8,11 +8,15 @@
 		"removeComments": true,
         "declaration": false,
 		"target": "es5",
-		"jsx": "react"
+		"jsx": "react",
+		"moduleResolution": "node",
+		"resolveJsonModule": true
 	},
 	"include": [
         "./src/**/*.ts",
-        "./src/**/*.tsx"
+		"./src/**/*.tsx",
+		"./demo/**/*.ts",
+		"./demo/**/*.tsx"
     ],
     "exclude": [
         "node_modules"

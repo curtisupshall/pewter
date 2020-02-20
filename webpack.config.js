@@ -2,16 +2,14 @@ module.exports = {
     entry: './demo/src/index.tsx',
     output: {
         filename: 'bundle.js',
-        path: __dirname + 'demo//dist',
+        path: __dirname + '/demo/dist',
         publicPath: '/demo/dist'
     },
 
-    // Enable sourcemaps for debugging webpack's output.
     devtool: 'source-map',
 
     resolve: {
-        // Add '.ts' and '.tsx' as resolvable extensions.
-        extensions: ['.ts', '.tsx', '.js', '.json', 'jpg']
+        extensions: ['.ts', '.tsx', '.js']
     },
 
     devServer: {
@@ -20,28 +18,33 @@ module.exports = {
 
     module: {
         rules: [
-            // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
             { test: /\.tsx?$/, loader: 'ts-loader' },
 
-            // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
             { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader' },
+
+            {
+                test: /\.(jpg|jpeg|png|svg|ttf|woff2?|eot|webmanifest)$/,
+                use: {
+                    loader: 'file-loader',
+                    options: {
+                        name: '[path][name].[ext]',
+                        // context: 'src/client/assets',
+                    },
+                },
+            },
 
             {
                 test: /\.(scss|css)$/,
                 use: [
-                    'style-loader', // Creates style nodes from JS strings
-                    { loader: 'css-loader' },   // Translates CSS into CommonJS
+                    'style-loader',
+                    { loader: 'css-loader?url=false' },
                     { loader: 'resolve-url-loader' },
-                    { loader: 'sass-loader' }   // Compiles Sass to CSS, using Node Sass by default
+                    { loader: 'sass-loader' }
                 ]
             }
         ]
     },
 
-    // When importing a module whose path matches one of the following, just
-    // assume a corresponding global variable exists and use that instead.
-    // This is important because it allows us to avoid bundling all of our
-    // dependencies, which allows browsers to cache those libraries between builds.
     externals: {
         'react': 'React',
         'react-dom': 'ReactDOM'
