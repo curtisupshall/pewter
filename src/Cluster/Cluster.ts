@@ -4,8 +4,9 @@ class Cluster {
     protected data: number[][]
     protected value: number[]
 
-    constructor() {
-
+    constructor(value: number[]) {
+        this.value = value
+        this.data = []
     }
 
     push = (vector: number[]) => {
@@ -21,7 +22,7 @@ class Cluster {
     }
 
     getValue = (): number[] => {
-        return this.value
+        return this.value.map((component: number) => Math.round(component))
     }
 
     isEmpty = (): boolean => {

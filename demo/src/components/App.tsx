@@ -1,3 +1,5 @@
+import '../assets/style/main.scss'
+
 import * as React from 'react'
 
 import Demo from './Demo'

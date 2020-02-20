@@ -1,5 +1,7 @@
-import { distance, mean } from './util'
-import { ICluster } from './types/pewter'
+import { distance } from '../util'
+import Cluster from './Cluster'
+
+const ITERATIONS: number = 2
 
 class KMeansCluster {
     private data: number[][]
@@ -8,7 +10,7 @@ class KMeansCluster {
         this.data = data
     }
 
-    getClusters = (k: number): number[][][] => {
+    getClusters = (k: number): Cluster[] => {
         if (k === 0) {
             return []
         }
@@ -18,28 +20,26 @@ class KMeansCluster {
             pivots.push(Math.floor(pivots[i - 1] - size / k))
         }
 
-        const clusters: ICluster[] = pivots.map((pivot: number) => ({ mean: this.data[pivot], data: [] }))
+        const clusters: Cluster[] = pivots.map((pivot: number) => new Cluster(this.data[pivot]))
 
-        for (let i: number = 0; i < 2; i ++) {
+        for (let i: number = 0; i < ITERATIONS; i ++) {
             for (let j: number = 0; j < this.data.length; j ++) {
-                let minDistance: number = distance(clusters[0].mean, this.data[j])
+                let minDistance: number = distance(clusters[0].getValue(), this.data[j])
                 let clusterIndex: number = 0
                 for (let k: number = 1; k < clusters.length; k ++) {
-                    let dist: number = distance(clusters[k].mean, this.data[j])
+                    let dist: number = distance(clusters[k].getValue(), this.data[j])
                     if (dist < minDistance) {
                         minDistance = dist
                         clusterIndex = k
                     }
                 }
-                clusters[clusterIndex].data.push(this.data[j])
+                clusters[clusterIndex].push(this.data[j])
             }
 
-            clusters.map((cluster: ICluster) => ({ ...cluster, mean: mean(cluster.data) }))
+            clusters.forEach((cluster: Cluster) => cluster.setMean())
         }
 
-        return clusters.map((cluster: ICluster) => cluster.data)
-
-        // console.log('pivots:', pivots)
+        return clusters
     }
 }
 

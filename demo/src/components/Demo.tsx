@@ -1,9 +1,8 @@
 import * as React from 'react'
 
-import { fromHex } from '../../../src/util'
-import Pewter from '../../../src/Pewter'
-import KMeansCluster from '../../../src/KMeansCluster'
-import ImageDataHelper from '../../../src/ImageDataHelper'
+import { toHex } from '../../../src/util'
+import Pewter, { getImageData } from '../../../src/Pewter'
+import Cluster from '../../../src/Cluster/Cluster'
 
 interface IState {
     data: number[][]
@@ -18,21 +17,30 @@ class Demo extends React.Component<{}, IState> {
         const image: HTMLImageElement = new Image()
         image.onload = () => {
             console.log('Image loaded.')
-            this.setState({ data: ImageDataHelper.getImageData(image)})
+            this.setState({ data: getImageData(image)})
         }
-        image.src = 'demo/src/assets/images/image1.jpg'
+        image.src = 'demo/src/assets/images/image3.jpg'
     }
 
     render() {
         const img = new Image()
-        
-        const clustere: KMeansCluster = new KMeansCluster(this.state.data)
-        clustere.getClusters(2)
-        const test: string = 'eed2d7'
+        // console.log('STATE:', this.state)
+        const pewter = new Pewter(this.state.data)
         return (
             <>
                 <h6>pewter v2</h6>
-                <img src='demo/src/assets/images/image1.jpg' />
+                <img src='demo/src/assets/images/image3.jpg' />
+                <div>
+                    {pewter.getClusters().map((cluster: Cluster) => {
+                        const style: React.CSSProperties = {
+                            backgroundColor: toHex(cluster.getValue())
+                        }
+                        console.log('style:', style)
+                        return (
+                            <div className='swatch' style={style} />
+                        )
+                    })}
+                </div>
             </>
         )
     }
