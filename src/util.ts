@@ -44,3 +44,22 @@ export const toHex = (color: number[]) => {
     console.log('color:', color)
     return `#${color[0].toString(16)}${color[1].toString(16)}${color[2].toString(16)}`
 }
+
+export const invertColors = (data: number[][][]): number[][][] => {
+    const newImage: number[][][] = new Array(data.length)
+    for (let i: number = 0; i < data.length; i ++) {
+        newImage.push(new Array(data[i].length))
+        for (let j: number = 0; j < data[i].length; j ++) {
+            newImage[i].push(new Array(data[i][j].length))
+            for (let k: number = 0; k < data[i][j].length; k ++) {
+                newImage[i][k][k] = 255 - data[i][j][k]
+            }
+        }
+    }
+
+    return newImage
+}
+
+export const bilateralFilter = () => {
+
+}
