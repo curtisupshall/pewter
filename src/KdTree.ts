@@ -47,14 +47,13 @@ class KDTree<T> {
     }
 
     nearestNeighbor = (goal: number[], best: KDTree<T> = this, dimension: number = 0): KDTree<T> => {
-        // console.log(`Best = ${best.value} ${best.vector}`)
         let good: KDTree<T>
         let bad: KDTree<T>
         const distance: number = this.distance(goal)
-        if (distance < best.distance(goal)) {
-            console.log('compare')
+        let bestDistance: number = best.distance(goal)
+        if (distance < bestDistance) {
             best = this
-            //console.log('bestDistance:', bestDistance)
+            bestDistance = distance
         }
         if (goal[dimension] < this.index(dimension)) {
             good = this.left
@@ -66,8 +65,10 @@ class KDTree<T> {
         if (good) {
             best = good.nearestNeighbor(goal, best, (dimension + 1) % this.dimension)
         }
-        const badSideCouldStillHaveSomethingUseful: boolean = Boolean(bad)
-        if (badSideCouldStillHaveSomethingUseful) {
+        const optimal: number[] = goal
+        optimal[dimension] = bad.index(dimension)
+        const optimalNode  = new KDTree<T>(null, optimal)
+        if (bad && optimalNode.distance(goal) < bestDistance) {
             best = bad.nearestNeighbor(goal, best, (dimension + 1) % this.dimension)
         }
 
