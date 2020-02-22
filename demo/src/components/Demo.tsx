@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { toHex } from '../../../src/util'
+import { toHex, canvasWriter, invertColors } from '../../../src/util'
 import Pewter, { getImageData } from '../../../src/Pewter'
 import Cluster from '../../../src/Cluster/Cluster'
 
@@ -12,24 +12,26 @@ class Demo extends React.Component<{}, IState> {
     state: IState = {
         data: []
     }
+    imageRef: React.RefObject<HTMLImageElement> = React.createRef()
 
     componentDidMount() {
-        const image: HTMLImageElement = new Image()
-        image.onload = () => {
+
+        this.imageRef.current.onload = () => {
             console.log('Image loaded.')
-            this.setState({ data: getImageData(image)})
+            // this.setState({ data: getImageData(image)})
+
+            canvasWriter(this.imageRef.current, invertColors(getImageData(this.imageRef.current)))
+            this.forceUpdate()
         }
-        image.src = 'demo/src/assets/images/image3.jpg'
+        this.imageRef.current.src = 'demo/src/assets/images/image3.jpg'
     }
 
     render() {
-        const img = new Image()
-        // console.log('STATE:', this.state)
         const pewter = new Pewter(this.state.data)
         return (
             <>
                 <h6>pewter v2</h6>
-                <img src='demo/src/assets/images/image3.jpg' />
+                <img ref={this.imageRef} />
                 <div>
                     {pewter.getClusters().map((cluster: Cluster) => {
                         const style: React.CSSProperties = {

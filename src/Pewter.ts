@@ -4,22 +4,29 @@ import * as colorNames from './colornames.min.json'
 import KMeansCluster from './Cluster/KMeansCluster'
 import Cluster from './Cluster/Cluster'
 
-export const getImageData = (image: HTMLImageElement): number[][] => {
-    // console.log('IMG.width:', image.width)
-    const data: number[][] = []
+export const getImageData = (image: HTMLImageElement): number[][][] => {
+    if (!image) {
+        return
+    }
 
-    if (image) {
-        const canvas: HTMLCanvasElement = document.createElement('canvas')
-        canvas.width = image.width
-        canvas.height = image.height
+    const data: number[][][] = []
+    const { width, height } = image
+    const canvas: HTMLCanvasElement = document.createElement('canvas')
+    canvas.width = width
+    canvas.height = height
 
-        const context: CanvasRenderingContext2D = canvas.getContext('2d')
-        context.drawImage(image, 0, 0)
+    const context: CanvasRenderingContext2D = canvas.getContext('2d')
+    context.drawImage(image, 0, 0)
 
-        const imageData: Uint8ClampedArray = context.getImageData(0, 0, image.width, image.height).data
-        for (let i: number = 0; i < imageData.length; i += 4) {
-            data.push(Array.from(imageData.slice(i, i + 3)))
+    const imageData: Uint8ClampedArray = context.getImageData(0, 0, width, height).data
+    let k: number = 0;
+    for (let i: number = 0; i < width; i ++) {
+        const row: number[][] = []
+        for (let j: number = 0; j < height; j ++) {
+            row.push(Array.from(imageData.slice(k, k + 3)))
+            k += 4
         }
+        data.push(row)
     }
 
     return data
