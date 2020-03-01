@@ -1,43 +1,71 @@
 import * as React from 'react'
 
-import { toHex, canvasWriter, invertColors } from '../../../src/util'
+import { toHex, invertColors } from '../../../src/util'
 import Pewter, { getImageData } from '../../../src/Pewter'
 import Cluster from '../../../src/Cluster/Cluster'
 
 interface IState {
     data: number[][]
+    imageLoaded: boolean
 }
 
 class Demo extends React.Component<{}, IState> {
     state: IState = {
-        data: []
+        data: [],
+        imageLoaded: false
     }
     imageRef: React.RefObject<HTMLImageElement> = React.createRef()
+    // canvasRef: React.RefObject<HTMLCanvasElement> = React.createRef()
+
 
     componentDidMount() {
+        const image = this.imageRef.current
+        image.src = 'demo/src/assets/images/image3.jpg'
+        image.onload = () => {
+            if (this.state.imageLoaded) {
+                return
+            }
+            this.setState({ imageLoaded: true }, () => {
+                console.log('Image loaded.')
+                const { width, height } = image
+                const canvas: HTMLCanvasElement = document.createElement('canvas')
+                // console.log(canvas.toDataURL())
+    
+                // canvas writer
+                const data: number[] = []
+                const input = invertColors(getImageData(image))
+                for (let i: number = 0; i < input.length; i ++) {
+                    for (let j: number = 0; j < input[i].length; j ++) {
+                        data.push(...[...input[i][j], 255])
+                        // data.push(...[255, 0, 0, 255]) // TEST ONLY
+                    }
+                }
+    
+                const context: CanvasRenderingContext2D  = canvas.getContext('2d')
+                canvas.width = width
+                canvas.height = height
+    
+                const newData: ImageData = new ImageData(Uint8ClampedArray.from(data), width, height)
+                console.log('newData:', newData)
 
-        this.imageRef.current.onload = () => {
-            console.log('Image loaded.')
-            // this.setState({ data: getImageData(image)})
-
-            canvasWriter(this.imageRef.current, invertColors(getImageData(this.imageRef.current)))
-            this.forceUpdate()
+                context.putImageData(newData, 0, 0)
+                // console.log(canvas.toDataURL())
+                image.src = canvas.toDataURL()
+            })
         }
-        this.imageRef.current.src = 'demo/src/assets/images/image3.jpg'
     }
 
     render() {
         const pewter = new Pewter(this.state.data)
         return (
             <>
+                <img ref={this.imageRef}/>
                 <h6>pewter v2</h6>
-                <img ref={this.imageRef} />
                 <div>
                     {pewter.getClusters().map((cluster: Cluster) => {
                         const style: React.CSSProperties = {
                             backgroundColor: toHex(cluster.getValue())
                         }
-                        console.log('style:', style)
                         return (
                             <div className='swatch' style={style} />
                         )

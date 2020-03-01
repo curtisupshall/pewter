@@ -1,8 +1,8 @@
 import KDTree from './KDTree'
 import { fromHex } from './util'
 import * as colorNames from './colornames.min.json'
-import KMeansCluster from './Cluster/KMeansCluster'
-import Cluster from './Cluster/Cluster'
+import KMeansCluster from './KMeansCluster'
+import Cluster from './Cluster'
 
 export const getImageData = (image: HTMLImageElement): number[][][] => {
     if (!image) {
@@ -19,6 +19,7 @@ export const getImageData = (image: HTMLImageElement): number[][][] => {
     context.drawImage(image, 0, 0)
 
     const imageData: Uint8ClampedArray = context.getImageData(0, 0, width, height).data
+    console.log('imageData:', imageData)
     let k: number = 0;
     for (let i: number = 0; i < width; i ++) {
         const row: number[][] = []
@@ -54,8 +55,6 @@ class Pewter {
 
         const kMeansCluster: KMeansCluster = new KMeansCluster(data)
         this.clusters = kMeansCluster.getClusters(10)
-        console.log('Clusters:', this.clusters.map((cluster: Cluster) => cluster.getValue()))
-        console.log('Data:', data)
     }
 
     testDictionary = (color: number[]) => {

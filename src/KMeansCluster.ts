@@ -1,4 +1,4 @@
-import { distance } from '../util'
+import { distance } from './util'
 import Cluster from './Cluster'
 
 const ITERATIONS: number = 2

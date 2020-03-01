@@ -1,4 +1,4 @@
-import { mean } from "../util"
+import { mean } from './util'
 
 class Cluster {
     protected data: number[][]
